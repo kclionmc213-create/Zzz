@@ -1,0 +1,262 @@
+-- Tạo ScreenGui chính
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local TitleLabel = Instance.new("TextLabel")
+
+-- Ảnh nền Gojo Satoru
+local BackgroundImage = Instance.new("ImageLabel")
+local Overlay = Instance.new("Frame")
+
+-- Nút mở/tắt menu nhanh
+local ToggleMenuButton = Instance.new("TextButton")
+
+-- Khung chứa danh mục (Tabs)
+local TabBar = Instance.new("Frame")
+local Tab1Button = Instance.new("TextButton")
+local Tab2Button = Instance.new("TextButton")
+
+-- Khung nội dung cho từng Mục
+local Content1 = Instance.new("Frame")
+local Content2 = Instance.new("Frame")
+
+-- Thiết lập GUI
+ScreenGui.Name = "MultiTabGui"
+ScreenGui.Parent = game:GetService("CoreGui") -- Hoặc game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Hàm hiển thị thông báo "Cảm ơn bạn đã bật" trong 2 giây
+local function showThankYouMessage()
+    local ThankYouLabel = Instance.new("TextLabel")
+    ThankYouLabel.Name = "ThankYouMessage"
+    ThankYouLabel.Parent = ScreenGui
+    ThankYouLabel.BackgroundTransparency = 1
+    ThankYouLabel.Position = UDim2.new(0, 0, 0.4, 0)
+    ThankYouLabel.Size = UDim2.new(1, 0, 0, 50)
+    ThankYouLabel.Font = Enum.Font.SourceSansBold
+    ThankYouLabel.Text = "Cảm ơn bạn đã bật"
+    ThankYouLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
+    ThankYouLabel.TextSize = 30
+    ThankYouLabel.TextStrokeTransparency = 0
+    ThankYouLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+    task.delay(2, function()
+        ThankYouLabel:Destroy()
+    end)
+end
+
+----------------------------------------------------
+-- NÚT BẬT / TẮT (ẨN / HIỆN) MENU
+----------------------------------------------------
+ToggleMenuButton.Name = "ToggleMenuButton"
+ToggleMenuButton.Parent = ScreenGui
+ToggleMenuButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+ToggleMenuButton.Position = UDim2.new(0, 10, 0.5, -20)
+ToggleMenuButton.Size = UDim2.new(0, 80, 0, 40)
+ToggleMenuButton.Font = Enum.Font.SourceSansBold
+ToggleMenuButton.Text = "Menu"
+ToggleMenuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleMenuButton.TextSize = 16
+ToggleMenuButton.Active = true
+ToggleMenuButton.Draggable = true
+
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(0, 8)
+ToggleCorner.Parent = ToggleMenuButton
+
+----------------------------------------------------
+-- BẢNG ĐIỀU KHIỂN CHÍNH
+----------------------------------------------------
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Position = UDim2.new(0.35, 0, 0.2, 0)
+MainFrame.Size = UDim2.new(0, 340, 0, 340)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Visible = true
+MainFrame.ClipsDescendants = true
+
+local FrameCorner = Instance.new("UICorner")
+FrameCorner.CornerRadius = UDim.new(0, 8)
+FrameCorner.Parent = MainFrame
+
+-- Ảnh nền Anime Gojo
+BackgroundImage.Name = "BackgroundImage"
+BackgroundImage.Parent = MainFrame
+BackgroundImage.BackgroundTransparency = 1
+BackgroundImage.Size = UDim2.new(1, 0, 1, 0)
+BackgroundImage.Image = "rbxassetid://11400812239" -- ID ảnh Anime Gojo
+BackgroundImage.ScaleType = Enum.ScaleType.Crop
+
+-- Lớp phủ tối mờ để chữ và nút dễ nhìn hơn
+Overlay.Name = "Overlay"
+Overlay.Parent = MainFrame
+Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Overlay.BackgroundTransparency = 0.45
+Overlay.Size = UDim2.new(1, 0, 1, 0)
+Overlay.ZIndex = 1
+
+-- Tiêu đề Menu
+TitleLabel.Name = "Title"
+TitleLabel.Parent = MainFrame
+TitleLabel.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TitleLabel.BackgroundTransparency = 0.2
+TitleLabel.Size = UDim2.new(1, 0, 0, 35)
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.Text = "FLING THINGS AND PEOPLE"
+TitleLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
+TitleLabel.TextSize = 16
+TitleLabel.ZIndex = 2
+
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 8)
+TitleCorner.Parent = TitleLabel
+
+-- Khung chứa các nút chuyển Mục
+TabBar.Name = "TabBar"
+TabBar.Parent = MainFrame
+TabBar.BackgroundTransparency = 1
+TabBar.Position = UDim2.new(0.05, 0, 0.12, 0)
+TabBar.Size = UDim2.new(0.9, 0, 0, 30)
+TabBar.ZIndex = 2
+
+-- Nút Chuyển sang Mục 1
+Tab1Button.Name = "Tab1Button"
+Tab1Button.Parent = TabBar
+Tab1Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Tab1Button.Size = UDim2.new(0.48, 0, 1, 0)
+Tab1Button.Font = Enum.Font.SourceSansBold
+Tab1Button.Text = "Mục 1"
+Tab1Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tab1Button.TextSize = 14
+Tab1Button.ZIndex = 2
+
+local Tab1Corner = Instance.new("UICorner")
+Tab1Corner.CornerRadius = UDim.new(0, 4)
+Tab1Corner.Parent = Tab1Button
+
+-- Nút Chuyển sang Mục 2
+Tab2Button.Name = "Tab2Button"
+Tab2Button.Parent = TabBar
+Tab2Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Tab2Button.Position = UDim2.new(0.52, 0, 0, 0)
+Tab2Button.Size = UDim2.new(0.48, 0, 1, 0)
+Tab2Button.Font = Enum.Font.SourceSansBold
+Tab2Button.Text = "Mục 2"
+Tab2Button.TextColor3 = Color3.fromRGB(180, 180, 180)
+Tab2Button.TextSize = 14
+Tab2Button.ZIndex = 2
+
+local Tab2Corner = Instance.new("UICorner")
+Tab2Corner.CornerRadius = UDim.new(0, 4)
+Tab2Corner.Parent = Tab2Button
+
+----------------------------------------------------
+-- NỘI DUNG MỤC 1 (Chứa 4 nút bấm)
+----------------------------------------------------
+Content1.Name = "Content1"
+Content1.Parent = MainFrame
+Content1.BackgroundTransparency = 1
+Content1.Position = UDim2.new(0.05, 0, 0.23, 0)
+Content1.Size = UDim2.new(0.9, 0, 0.74, 0)
+Content1.Visible = true
+Content1.ZIndex = 2
+
+local tab1Data = {
+    {Text = "fly cam free no key", Color = Color3.fromRGB(0, 150, 255), Url = "https://raw.githubusercontent.com/dw9118791-tech/Trinhthiennhan-/refs/heads/main/Trinhthiennhan"},
+    {Text = "fling", Color = Color3.fromRGB(150, 0, 255), Url = "https://pastefy.app/ZefhoJDD/raw"},
+    {Text = "fling things and people hub", Color = Color3.fromRGB(255, 100, 0), Url = "https://rawscripts.net/raw/Fling-Things-and-People-Arahis-hub-229005"},
+    {Text = "FTAP HUB", Color = Color3.fromRGB(40, 180, 90), Url = "https://rawscripts.net/raw/Fling-Things-and-People-FTAP-Hub-79081"}
+}
+
+for i, data in ipairs(tab1Data) do
+    local btn = Instance.new("TextButton")
+    btn.Name = "Button1_" .. i
+    btn.Parent = Content1
+    btn.BackgroundColor3 = data.Color
+    btn.Position = UDim2.new(0, 0, (i - 1) * 0.24, 0)
+    btn.Size = UDim2.new(1, 0, 0.20, 0)
+    btn.Font = Enum.Font.SourceSansBold
+    btn.Text = data.Text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 14
+    btn.ZIndex = 2
+
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 6)
+    btnCorner.Parent = btn
+
+    btn.MouseButton1Click:Connect(function()
+        showThankYouMessage()
+        pcall(function()
+            loadstring(game:HttpGet(data.Url))()
+        end)
+    end)
+end
+
+----------------------------------------------------
+-- NỘI DUNG MỤC 2 (Chứa nút 4)
+----------------------------------------------------
+Content2.Name = "Content2"
+Content2.Parent = MainFrame
+Content2.BackgroundTransparency = 1
+Content2.Position = UDim2.new(0.05, 0, 0.23, 0)
+Content2.Size = UDim2.new(0.9, 0, 0.74, 0)
+Content2.Visible = false
+Content2.ZIndex = 2
+
+local tab2Data = {
+    {Text = "Bliz_T HUP FTAP yes key", Color = Color3.fromRGB(220, 20, 60), Url = "https://rawscripts.net/raw/Fling-Things-and-People-Blitz-Hub-35430"}
+}
+
+for i, data in ipairs(tab2Data) do
+    local btn = Instance.new("TextButton")
+    btn.Name = "Button2_" .. i
+    btn.Parent = Content2
+    btn.BackgroundColor3 = data.Color
+    btn.Position = UDim2.new(0, 0, (i - 1) * 0.24, 0)
+    btn.Size = UDim2.new(1, 0, 0.20, 0)
+    btn.Font = Enum.Font.SourceSansBold
+    btn.Text = data.Text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 14
+    btn.ZIndex = 2
+
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 6)
+    btnCorner.Parent = btn
+
+    btn.MouseButton1Click:Connect(function()
+        showThankYouMessage()
+        pcall(function()
+            loadstring(game:HttpGet(data.Url))()
+        end)
+    end)
+end
+
+----------------------------------------------------
+-- SỰ KIỆN NÚT ẨN / HIỆN MENU
+----------------------------------------------------
+ToggleMenuButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+----------------------------------------------------
+-- XỬ LÝ CHUYỂN ĐỔI GIỮA CÁC MỤC
+----------------------------------------------------
+Tab1Button.MouseButton1Click:Connect(function()
+    Content1.Visible = true
+    Content2.Visible = false
+    Tab1Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Tab1Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab2Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Tab2Button.TextColor3 = Color3.fromRGB(180, 180, 180)
+end)
+
+Tab2Button.MouseButton1Click:Connect(function()
+    Content1.Visible = false
+    Content2.Visible = true
+    Tab2Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Tab2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tab1Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Tab1Button.TextColor3 = Color3.fromRGB(180, 180, 180)
+end)
